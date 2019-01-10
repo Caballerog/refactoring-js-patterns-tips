@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title>Reproductor de Video</title>
+    <link rel="stylesheet" href="player.css">
+<script src="player.js"></script>
+</head>
+<body>
+    <section id="reproductor">
+        <video id="medio" width="720" height="400">
+            <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+            <source src="https://www.w3schools.com/html/mov_bbb.ogg" type="video/ogg">
+        </video>
+        <nav>
+            <div id="botones">
+                <button type="button" id="reproducir">Reproducir</button>
+            </div>
+            <div id="barra">
+                <div id="progreso"></div>
+            </div>
+            <div style="clear: both"></div>
+        </nav>
+    </section>
+</body>
+</html>
