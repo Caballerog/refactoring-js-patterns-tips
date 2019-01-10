@@ -13,7 +13,7 @@ const player = (function(view) {
     GUI.bar.addEventListener('click', move, false);
   }
   function click() {
-    if (!GUI.media.paused && !GUI.media.ended) {
+    if (!isVideoPausedOrEnded()) {
       GUI.media.pause();
       GUI.play.innerHTML = 'Play';
       clearInterval(loop);
@@ -24,7 +24,7 @@ const player = (function(view) {
     }
   }
   function move(e) {
-    if (!GUI.media.paused && !GUI.media.ended) {
+    if (!isVideoPausedOrEnded()) {
       const mouseX = e.pageX - bar.offsetLeft;
       const newTime = (mouseX * media.duration) / max;
       GUI.media.currentTime = newTime;
@@ -32,7 +32,7 @@ const player = (function(view) {
     }
   }
   function state() {
-    if (!GUI.media.ended) {
+    if (!isVideoEnded()) {
       const total = parseInt(
         (GUI.media.currentTime * max) / GUI.media.duration
       );
@@ -42,6 +42,12 @@ const player = (function(view) {
       GUI.play.innerHTML = 'Play';
       clearInterval(loop);
     }
+  }
+  function isVideoPausedOrEnded() {
+    return GUI.media.paused || GUI.media.ended;
+  }
+  function isVideoEnded() {
+    return GUI.media.ended;
   }
   return {
     init,
