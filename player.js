@@ -14,13 +14,9 @@ const player = (function(view) {
   }
   function click() {
     if (!isVideoPausedOrEnded()) {
-      GUI.media.pause();
-      GUI.play.innerHTML = 'Play';
-      clearInterval(loop);
+      pauseVideo();
     } else {
-      GUI.media.play();
-      GUI.play.innerHTML = 'Pause';
-      loop = setInterval(state, 1000);
+      playVideo();
     }
   }
   function move(e) {
@@ -31,23 +27,37 @@ const player = (function(view) {
       progress.style.width = mouseX + 'px';
     }
   }
-  function state() {
-    if (!isVideoEnded()) {
-      const total = parseInt(
-        (GUI.media.currentTime * max) / GUI.media.duration
-      );
-      GUI.progress.style.width = total + 'px';
-    } else {
-      GUI.progress.style.width = '0px';
-      GUI.play.innerHTML = 'Play';
-      clearInterval(loop);
-    }
-  }
   function isVideoPausedOrEnded() {
     return GUI.media.paused || GUI.media.ended;
   }
   function isVideoEnded() {
     return GUI.media.ended;
+  }
+  function pauseVideo() {
+    GUI.media.pause();
+    GUI.play.innerHTML = 'Play';
+    clearInterval(loop);
+  }
+  function playVideo() {
+    GUI.media.play();
+    GUI.play.innerHTML = 'Pause';
+    loop = setInterval(state, 1000);
+  }
+  function stateEndVideo() {
+    GUI.progress.style.width = '0px';
+    GUI.play.innerHTML = 'Play';
+    clearInterval(loop);
+  }
+  function statePlayingVideo() {
+    const total = parseInt((GUI.media.currentTime * max) / GUI.media.duration);
+    GUI.progress.style.width = total + 'px';
+  }
+  function state() {
+    if (!isVideoEnded()) {
+      statePlayingVideo();
+    } else {
+      stateEndVideo();
+    }
   }
   return {
     init,
