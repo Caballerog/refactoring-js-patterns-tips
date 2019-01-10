@@ -38,7 +38,7 @@ const player = (function(view) {
       const mouseX = e.pageX - bar.offsetLeft;
       const newTime = (mouseX * media.duration) / max;
       GUI.media.currentTime = newTime;
-      progress.style.width = mouseX + 'px';
+      GUI.progress.style.width = mouseX + 'px';
     }
   }
   function isVideoPausedOrEnded() {
