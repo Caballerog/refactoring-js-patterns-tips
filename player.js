@@ -1,41 +1,41 @@
-function iniciar() {
-	maximo=600;
-	medio=document.getElementById('medio');
-	reproducir=document.getElementById('reproducir');
-	barra=document.getElementById('barra');
-	progreso=document.getElementById('progreso');
-	reproducir.addEventListener('click', presionar, false);
-	barra.addEventListener('click', mover, false);
+function init() {
+  max = 600;
+  media = document.getElementById('media');
+  play = document.getElementById('play');
+  bar = document.getElementById('bar');
+  progress = document.getElementById('progress');
+  play.addEventListener('click', click, false);
+  bar.addEventListener('click', move, false);
 }
-function presionar(){
-	if(!medio.paused && !medio.ended) {
-		medio.pause();
-		reproducir.innerHTML='Reproducir';
-		window.clearInterval(bucle);
-	}else{
-		medio.play();
-		reproducir.innerHTML='Pausa';
-		bucle=setInterval(estado, 1000);
-	}
-}
-
-function estado(){
-	if(!medio.ended){
-		var total=parseInt(medio.currentTime*maximo/medio.duration);
-		progreso.style.width=total+'px';
-	}else{
-		progreso.style.width='0px';
-		reproducir.innerHTML='Reproducir';
-		window.clearInterval(bucle);
-	}
+function click() {
+  if (!media.paused && !media.ended) {
+    media.pause();
+    play.innerHTML = 'Play';
+    window.clearInterval(loop);
+  } else {
+    media.play();
+    play.innerHTML = 'Pause';
+    loop = setInterval(state, 1000);
+  }
 }
 
-function mover(e){
-	if(!medio.paused && !medio.ended){
-		var ratonX=e.pageX-barra.offsetLeft;
-		var nuevoTiempo=ratonX*medio.duration/maximo;
-		medio.currentTime=nuevoTiempo;
-		progreso.style.width=ratonX+'px';
-	}
+function state() {
+  if (!media.ended) {
+    var total = parseInt((media.currentTime * max) / media.duration);
+    progress.style.width = total + 'px';
+  } else {
+    progress.style.width = '0px';
+    play.innerHTML = 'Play';
+    window.clearInterval(loop);
+  }
 }
-window.addEventListener('load', iniciar, false);
+
+function move(e) {
+  if (!media.paused && !media.ended) {
+    var mouseX = e.pageX - bar.offsetLeft;
+    var newTime = (mouseX * media.duration) / max;
+    media.currentTime = newTime;
+    progress.style.width = mouseX + 'px';
+  }
+}
+window.addEventListener('load', init, false);
