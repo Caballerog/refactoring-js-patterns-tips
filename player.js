@@ -2,6 +2,21 @@ const player = (function(view) {
   const max = 600;
   let GUI = {};
   let loop;
+  const ACTIONS = {
+    PLAY_VIDEO: 'PLAY',
+    PAUSE_VIDEO: 'PAUSE',
+    STATE_END: 'STATE_END',
+    STATE_PLAYING: 'STATE_PLAYING'
+  };
+  const command = {
+    [ACTIONS.PLAY_VIDEO]: playVideo,
+    [ACTIONS.PAUSE_VIDEO]: pauseVideo,
+    [ACTIONS.STATE_END]: stateEndVideo,
+    [ACTIONS.STATE_PLAYING]: statePlayingVideo,
+    execute: function(action) {
+      this[action]();
+    }
+  };
   function init() {
     GUI = {
       media: view.getElementById('media'),
@@ -13,11 +28,10 @@ const player = (function(view) {
     GUI.bar.addEventListener('click', move, false);
   }
   function click() {
-    if (!isVideoPausedOrEnded()) {
-      pauseVideo();
-    } else {
-      playVideo();
-    }
+    const action = isVideoPausedOrEnded()
+      ? ACTIONS.PLAY_VIDEO
+      : ACTIONS.PAUSE_VIDEO;
+    command.execute(action);
   }
   function move(e) {
     if (!isVideoPausedOrEnded()) {
@@ -53,11 +67,8 @@ const player = (function(view) {
     GUI.progress.style.width = total + 'px';
   }
   function state() {
-    if (!isVideoEnded()) {
-      statePlayingVideo();
-    } else {
-      stateEndVideo();
-    }
+    const action = isVideoEnded() ? ACTIONS.STATE_END : ACTIONS.STATE_PLAYING;
+    command.execute(action);
   }
   return {
     init,
